@@ -2,7 +2,7 @@ from text_node import TextNode, TextType
 
 
 def main():
-    node = TextNode("cool", TextType.BOLD_TEXT)
+    node = TextNode("cool", TextType.BOLD)
     print(node)
 
 

@@ -3,22 +3,22 @@ from typing import Text
 
 
 class TextType(Enum):
-    PLAIN_TEXT = "text"
-    BOLD_TEXT = "bold"
-    ITALIC_TEXT = "italic"
-    CODE_TEXT = "code"
-    LINK_TEXT = "link"
-    EMBEDED_IMAGE_TEXT = "image"
+    TEXT = "text"
+    BOLD = "bold"
+    ITALIC = "italic"
+    CODE = "code"
+    LINK = "link"
+    IMAGE = "image"
 
 
 def get_text_type_by_delimiter(delimiter):
     match delimiter:
         case "**":
-            return TextType.BOLD_TEXT
+            return TextType.BOLD
         case "_":
-            return TextType.ITALIC_TEXT
+            return TextType.ITALIC
         case "`":
-            return TextType.CODE_TEXT
+            return TextType.CODE
         case _:
             raise ValueError("invalid delimiter")
 
