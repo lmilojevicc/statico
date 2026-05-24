@@ -1,5 +1,6 @@
 import unittest
 
+from blocks import markdown_to_blocks
 from parser import (
     split_nodes_delimiter,
     split_nodes_image,
@@ -7,6 +8,53 @@ from parser import (
     text_to_textnodes,
 )
 from text_node import TextNode, TextType
+
+
+class TestBlockParsing(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_of_new_lines(self):
+        md = """
+
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [],
+        )
+
+    def test_markdown_of_excessive_new_lines(self):
+        md = """
+This is text
+
+
+More text
+
+
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            ["This is text", "More text"],
+        )
 
 
 class TestFullTextParsing(unittest.TestCase):
