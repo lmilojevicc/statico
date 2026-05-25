@@ -30,6 +30,23 @@ class TestBlockType(unittest.TestCase):
         """
         self.assert_blocks_are_type(text, BlockType.ORDERED_LIST)
 
+    def test_valid_ordered_list_with_ten_items(self):
+        block = "\n".join(
+            [
+                "1. one",
+                "2. two",
+                "3. three",
+                "4. four",
+                "5. five",
+                "6. six",
+                "7. seven",
+                "8. eight",
+                "9. nine",
+                "10. ten",
+            ]
+        )
+        self.assertEqual(block_to_block_type(block), BlockType.ORDERED_LIST)
+
     def test_invalid_ordered_list(self):
         text = """
 1.one

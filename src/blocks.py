@@ -17,7 +17,7 @@ def markdown_to_blocks(markdown: str) -> list[str]:
 
 def block_to_block_type(block: str) -> BlockType:
     lines = block.split("\n")
-    if re.match(r"^#{1,6} .+", block):
+    if re.fullmatch(r"#{1,6} .+", block):
         return BlockType.HEADING
     if len(lines) >= 2 and lines[0] == "```" and lines[-1] == "```":
         return BlockType.CODE
@@ -25,9 +25,11 @@ def block_to_block_type(block: str) -> BlockType:
         return BlockType.QUOTE
     if all(line.startswith("- ") for line in lines):
         return BlockType.UNORDERED_LIST
-    if all(
-        line.startswith(f"{i}. ") or (i == len(lines) and line == f"{i}.")
-        for i, line in enumerate(lines, start=1)
-    ):
+    if all(is_ordered_list_item(line, i) for i, line in enumerate(lines, start=1)):
         return BlockType.ORDERED_LIST
     return BlockType.PARAGRAPH
+
+
+def is_ordered_list_item(line: str, number: int) -> bool:
+    match = re.match(r"^(\d+)\.(?: |$)", line)
+    return match is not None and int(match.group(1)) == number

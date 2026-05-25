@@ -24,7 +24,7 @@ def get_text_type_by_delimiter(delimiter):
 
 
 class TextNode:
-    def __init__(self, text: Text, type: TextType, url=None):
+    def __init__(self, text: Text, type: TextType, url: str | None = None):
         self.text = text
         self.text_type = type
         self.url = url
