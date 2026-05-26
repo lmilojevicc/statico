@@ -1,9 +1,8 @@
-from text_node import TextNode, TextType
+from static import copy_contents
 
 
 def main():
-    node = TextNode("cool", TextType.BOLD)
-    print(node)
+    copy_contents("static", "public")
 
 
 if __name__ == "__main__":
