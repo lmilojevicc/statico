@@ -4,27 +4,31 @@ from pathlib import Path
 from extract import extract_title
 from parser import markdown_to_html_node
 
+
 def generate_pages_recursive(
-       content_dir_path: str, template_path: str, dest_dir_path: str
-   ) -> None:
-       content_dir = Path(content_dir_path)
-       dest_dir = Path(dest_dir_path)
+    content_dir_path: str, template_path: str, dest_dir_path: str, basepath: str
+) -> None:
+    content_dir = Path(content_dir_path)
+    dest_dir = Path(dest_dir_path)
 
-       for source_path in content_dir.iterdir():
-           dest_path = dest_dir / source_path.name
+    for source_path in content_dir.iterdir():
+        dest_path = dest_dir / source_path.name
 
-           if source_path.is_dir():
-               generate_pages_recursive(str(source_path), template_path, str(dest_path))
+        if source_path.is_dir():
+            generate_pages_recursive(
+                str(source_path), template_path, str(dest_path), basepath
+            )
 
-           elif source_path.is_file() and source_path.suffix == ".md":
-               generate_page(
-                   str(source_path),
-                   template_path,
-                   str(dest_path.with_suffix(".html")),
-               )
+        elif source_path.is_file() and source_path.suffix == ".md":
+            generate_page(
+                str(source_path),
+                template_path,
+                str(dest_path.with_suffix(".html")),
+                basepath,
+            )
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     markdown_content = ""
@@ -45,6 +49,8 @@ def generate_page(from_path, template_path, dest_path):
 
     template_content = template_content.replace("{{ Title }}", title)
     template_content = template_content.replace("{{ Content }}", html_content)
+    template_content = template_content.replace('href="/', f'href="{basepath}')
+    template_content = template_content.replace('src="/', f'src="{basepath}')
 
     path = Path(dest_path)
     path.parent.mkdir(parents=True, exist_ok=True)
