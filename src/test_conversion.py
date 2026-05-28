@@ -27,5 +27,5 @@ class TestConversion(unittest.TestCase):
         self.assertEqual(img_html_node.tag, "img")
         self.assertEqual(img_html_node.value, "")
         self.assertEqual(
-            img_html_node.to_html(), '<img href="https://example.com" alt="cool"></img>'
+            img_html_node.to_html(), '<img src="https://example.com" alt="cool"></img>'
         )
